@@ -11,12 +11,13 @@ services:
       - 3000:3000
     networks:
       - grafana_loki
+
   loki:
     image: grafana/loki:2.5.0
     ports:
       - "3100:3100"
     volumes:
-      - ./loki-config.yml:/etc/loki/local-config.yml
+      - ./loki/loki-local-config.yml:/etc/loki/local-config.yml
     command: -config.file=/etc/loki/local-config.yml
     networks:
       - grafana_loki
@@ -26,11 +27,10 @@ services:
     container_name: promtail
     volumes:
       - /var/log:/var/log
-      - ./promtail-config.yml:/etc/promtail/config.yml
+      - ./promtail/promtail-local-config.yml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml
     ports:
       - 9080:9080
-    restart: unless-stopped
     networks:
       - grafana_loki
   prometheus:
